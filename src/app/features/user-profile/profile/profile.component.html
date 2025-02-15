@@ -1,0 +1,97 @@
+<div class="profile-container">
+  <h2>User Profile</h2>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    Loading...
+  </div>
+
+  <div *ngIf="successMessage" class="alert-success">
+    {{ successMessage }}
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="form-section">
+      <h3>Personal Information</h3>
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input id="firstName" type="text" formControlName="firstName">
+        <div *ngIf="profileForm.get('firstName')?.errors?.['required'] && profileForm.get('firstName')?.touched" class="error-message">
+          First name is required
+        </div>
+        <div *ngIf="profileForm.get('firstName')?.errors?.['minlength'] && profileForm.get('firstName')?.touched" class="error-message">
+          First name must be at least 2 characters
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" type="text" formControlName="lastName">
+        <div *ngIf="profileForm.get('lastName')?.errors?.['required'] && profileForm.get('lastName')?.touched" class="error-message">
+          Last name is required
+        </div>
+        <div *ngIf="profileForm.get('lastName')?.errors?.['minlength'] && profileForm.get('lastName')?.touched" class="error-message">
+          Last name must be at least 2 characters
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" formControlName="email">
+        <div *ngIf="profileForm.get('email')?.errors?.['required'] && profileForm.get('email')?.touched" class="error-message">
+          Email is required
+        </div>
+        <div *ngIf="profileForm.get('email')?.errors?.['email'] && profileForm.get('email')?.touched" class="error-message">
+          Please enter a valid email address
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input id="phone" type="tel" formControlName="phone" placeholder="+1234567890">
+        <div *ngIf="profileForm.get('phone')?.errors?.['pattern'] && profileForm.get('phone')?.touched" class="error-message">
+          Please enter a valid phone number (e.g., +1234567890)
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section" formGroupName="address">
+      <h3>Address</h3>
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input id="street" type="text" formControlName="street">
+        <div *ngIf="profileForm.get('address.street')?.errors?.['required'] && profileForm.get('address.street')?.touched" class="error-message">
+          Street is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input id="city" type="text" formControlName="city">
+        <div *ngIf="profileForm.get('address.city')?.errors?.['required'] && profileForm.get('address.city')?.touched" class="error-message">
+          City is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input id="country" type="text" formControlName="country">
+        <div *ngIf="profileForm.get('address.country')?.errors?.['required'] && profileForm.get('address.country')?.touched" class="error-message">
+          Country is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!isFormValid || isFormPristine">
+        Save Profile
+      </button>
+      <button type="button" (click)="resetForm()" [disabled]="isFormPristine">
+        Reset Form
+      </button>
+    </div>
+
+    <div *ngIf="isFormDirty" class="form-status">
+      * You have unsaved changes
+    </div>
+  </form>
+</div>
